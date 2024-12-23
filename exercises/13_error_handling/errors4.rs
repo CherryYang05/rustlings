@@ -8,9 +8,14 @@ enum CreationError {
 struct PositiveNonzeroInteger(u64);
 
 impl PositiveNonzeroInteger {
-    fn new(value: i64) -> Result<Self, CreationError> {
-        // TODO: This function shouldn't always return an `Ok`.
-        Ok(Self(value as u64))
+    fn new(value: i64) -> Result<PositiveNonzeroInteger, CreationError> {
+        // Hmm...? Why is this only returning an Ok value?
+        if value < 0 {
+            return Err(CreationError::Negative);
+        } else if value == 0 {
+            return Err(CreationError::Zero);
+        }
+        Ok(PositiveNonzeroInteger(value as u64))
     }
 }
 
