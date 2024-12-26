@@ -27,23 +27,71 @@ enum IntoColorError {
 // Correct RGB color values must be integers in the 0..=255 range.
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        if tuple.0 < 0 || tuple.0 > 255 {
+            return Err(IntoColorError::IntConversion);
+        }
+        if tuple.1 < 0 || tuple.1 > 255 {
+            return Err(IntoColorError::IntConversion);
+        }
+        if tuple.2 < 0 || tuple.2 > 255 {
+            return Err(IntoColorError::IntConversion);
+        }
 
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+        Ok(Color {
+            red: tuple.0 as u8,
+            green: tuple.1 as u8,
+            blue: tuple.2 as u8,
+        })
+    }
 }
 
 // TODO: Array implementation.
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        if arr[0] < 0 || arr[0] > 255 {
+            return Err(IntoColorError::IntConversion);
+        }
+        if arr[1] < 0 || arr[1] > 255 {
+            return Err(IntoColorError::IntConversion);
+        }
+        if arr[2] < 0 || arr[2] > 255 {
+            return Err(IntoColorError::IntConversion);
+        }
 
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+        Ok(Color {
+            red: arr[0] as u8,
+            green: arr[1] as u8,
+            blue: arr[2] as u8,
+        })
+    }
 }
 
 // TODO: Slice implementation.
 // This implementation needs to check the slice length.
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen)
+        }
+        if slice[0] < 0 || slice[0] > 255 {
+            return Err(IntoColorError::IntConversion);
+        }
+        if slice[1] < 0 || slice[1] > 255 {
+            return Err(IntoColorError::IntConversion);
+        }
+        if slice[2] < 0 || slice[2] > 255 {
+            return Err(IntoColorError::IntConversion);
+        }
 
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+        Ok(Color {
+            red: slice[0] as u8,
+            green: slice[1] as u8,
+            blue: slice[2] as u8,
+        })
+    }
 }
 
 fn main() {
